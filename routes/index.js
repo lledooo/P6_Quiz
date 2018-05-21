@@ -3,11 +3,11 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('index', { title: 'Quiz' });
+  res.render('index');
 });
 
 
-// Author page
+// Página de creditos
 router.get('/author',(req,res,next)=>{
 	res.render('author');
 });
