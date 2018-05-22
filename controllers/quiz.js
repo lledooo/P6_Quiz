@@ -39,8 +39,8 @@ exports.new = (req, res, next) => {
 // POST /quizzes/create
 exports.create = (req, res, next) => {
     let quiz = {
-        answer: req.body.answer
         question: req.body.question,
+        answer: req.body.answer
     };
 
     // Validates that they are no empty
