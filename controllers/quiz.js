@@ -125,6 +125,74 @@ exports.destroy = (req, res, next) => {
 };
 
 
+exports.randomplay = (req, res, next) =>{
+
+    req.session.aciertos = req.session.aciertos || [];
+
+    const score = req.session.aciertos.length;
+
+    const sinUsar = {id: {[Sequelize.Op.notIn] : req.session.aciertos}};
+
+    models.quiz.count({where: sinUsar})
+
+    .then(count => {
+        return models.quiz.findOne({
+            where: sinUsar,
+            offset: Math.floor(Math.random()*count),
+            limit: 1
+        })
+    })
+    .then(quiz => {
+        if(quiz ==! undefined){
+            res.render('quizzes/random_play',{
+                quiz: quiz,
+                score: score
+            })
+        } else {
+            req.session.aciertos = [];
+            res.render('quizzes/random_nomore'){
+                score: score
+            }
+        }
+    })
+    .catch(error => next(error))
+
+};
+exports.randomplayresponse = (req, res, next) => {
+    try{
+    const {quiz, query} = req;
+    req.session.aciertos = req.session.aciertos || [];
+
+    const answer = query.answer || "";
+    
+
+    const result = answer.toLowerCase().trim() === quiz.answer.toLowerCase().trim();
+
+    if (result){
+        if(req.session.aciertos.indexOf(req.quiz.id) === -1){
+            req.session.aciertos.push(req.quiz.id);
+        }
+    }
+
+    const score = req.session.aciertos.length;
+
+    if(!result){
+        req.session.aciertos = [];
+    }
+
+    res.render('quizzes/random_result', {
+        answer, 
+        result, 
+        score
+    });
+    } catch (error){
+        next(error);
+    }
+}
+
+
+
+
 // GET /quizzes/:quizId/play
 exports.play = (req, res, next) => {
 
