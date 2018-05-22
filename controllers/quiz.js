@@ -150,9 +150,9 @@ exports.randomplay = (req, res, next) =>{
             })
         } else {
             req.session.aciertos = [];
-            res.render('quizzes/random_nomore'){
+            res.render('quizzes/random_nomore',{
                 score: score
-            }
+            })
         }
     })
     .catch(error => next(error))
