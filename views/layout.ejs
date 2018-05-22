@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-
 <html>
- <head>
+<head>
     <meta charset="utf-8">
     <title>Quiz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,34 +13,61 @@
           type='text/css'
           media='only screen and (max-width: 480px)'
           href='/stylesheets/smartphone.css'/>
- </head>
+</head>
 <body>
 <div id="page">
-<header class="main" id="mainHeader">
-	<h1><span class="no narrow">The</span>
-		Quiz
-		<span class="no narrow">Site</span>
+    <header class="main" id="mainHeader">
+        <h1><span class="no-narrow">The</span> Quiz <span class="no-narrow">Site</span></h1>
+    </header>
 
-	</h1>
-</header>
+    <nav class="main" id="mainNav" role="navigation">
+        <a href="/">Home</a>
+        <a href="/quizzes">Quizzes</a>
+        <a href="/author">Author</a>
+    </nav>
 
-<nav class="main" id="mainNav" role="navigation">
-	<a href="/">Home</a>
-  <a href="/quizzes">Quizzes</a>
-	<a href="/author">Author</a>
-</nav>
-<section class="main" id="mainSection">
+    <section class="main" id="mainSection">
 
-		<%- body %>
+        <% if (messages.info) { %>
+        <article id='flashinfo'>
+            <h3>Information of interest:</h3>
+            <ul>
+                <% for (var i in messages.info) { %>
+                <li> <%= messages.info[i] %> </li>
+                <% } %>
+            </ul>
+        </article>
+        <% } %>
 
-</section>
+        <% if (messages.success) { %>
+        <article id='flashsuccess'>
+            <h3>Tasks completed successfully:</h3>
+            <ul>
+                <% for (var i in messages.success) { %>
+                <li> <%= messages.success[i] %> </li>
+                <% } %>
+            </ul>
+        </article>
+        <% } %>
 
-<footer class="main" id="mainFooter">
-	<a href="http://en.wikipedia.org/wiki/Quiz">
-		What is a Quiz?
-	</a>
-</footer>
+        <% if (messages.error) { %>
+        <article id='flasherror'>
+            <h3>Errors:</h3>
+            <ul>
+                <% for (var i in messages.error) { %>
+                <li> <%= messages.error[i] %> </li>
+                <% } %>
+            </ul>
+        </article>
+        <% } %>
 
+        <%- body %>
+    </section>
+
+    <footer class="main" id="mainFooter">
+        <a href="http://en.wikipedia.org/wiki/Quiz">
+            What is a Quiz?</a>
+    </footer>
 </div>
 </body>
 </html>
