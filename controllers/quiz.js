@@ -7,7 +7,7 @@ const paginate = require('../helpers/paginate').paginate;
 // Autoload the quiz with id equals to :quizId
 exports.load = (req, res, next, quizId) => {
 
-    models.quiz.findById(quizId)
+    models.quiz.findById(quizId, { include: [ models.tip ] })
     .then(quiz => {
         if (quiz) {
             req.quiz = quiz;
@@ -48,7 +48,7 @@ exports.index = (req, res, next) => {
         res.locals.paginate_control = paginate(count, items_per_page, pageno, req.url);
 
         const findOptions = {
-            (...)countOptions,
+            ...countOptions,
             offset: items_per_page * (pageno - 1),
             limit: items_per_page
         };
