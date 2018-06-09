@@ -1,4 +1,3 @@
-
 <div class="right">
     <small> (by <%= quiz.author ? quiz.author.username : "Anonymous" %>) </small>
 </div>
@@ -24,9 +23,12 @@
     Tips:
 </h1>
 
-<% include ../tips/new %>
+<% if (session.user) { %>
+    <% include ../tips/new %>
+<% } %>
 
 <% var tips = quiz.tips; %>
+<% var quizId = quiz.id; %>
 
 <% include ../tips/index %>
 

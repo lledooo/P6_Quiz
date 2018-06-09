@@ -1,3 +1,4 @@
+
 <h1>
     User:
 </h1>
@@ -15,17 +16,16 @@
 
 </ul>
 
-<p>
-    <a href="/users/<%= user.id %>/edit">
-        <button type="button"> Edit</button>
-    </a>
-
-    <a href="/users/<%= user.id %>?_method=DELETE">
-        <button type="button"
-                onClick="return confirm('Delete user: <%= user.username %>');">
-            Delete
-        </button>
-    </a>
-</p>
-
-<a href="/goback"><button type="button">Go back</button></a>
+<% if (session.user) { %>
+    <p>
+        <a href="/users/<%= user.id %>/edit">
+            <button type="button"> Edit</button>
+        </a>
+        <a href="/users/<%= user.id %>?_method=DELETE">
+            <button type="button"
+                    onClick="return confirm('Delete user: <%= user.username %>');">
+                Delete
+            </button>
+        </a>
+    </p>
+<% } %>
