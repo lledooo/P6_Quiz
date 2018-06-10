@@ -16,6 +16,18 @@ exports.load = (req, res, next, tipId) => {
     })
     .catch(error => next(error));
 };
+exports.adminOrAuthorRequired = (req, res, next) => {
+
+    const isAdmin  = !!req.session.user.isAdmin;
+    const isAuthor = req.tip.authorId === req.session.user.id;
+
+    if (isAdmin || isAuthor) {
+        next();
+    } else {
+        console.log('Prohibited operation: The logged in user is not the author of the tip, nor an administrator.');
+        res.send(403);
+    }
+};
 
 
 // POST /quizzes/:quizId/tips
@@ -72,4 +84,35 @@ exports.destroy = (req, res, next) => {
         res.redirect('/quizzes/' + req.params.quizId);
     })
     .catch(error => next(error));
+};
+exports.edit = (req, res, next) => {
+
+    const {tip} = req;
+
+    res.render('tips/edit', {tip});
+};
+
+
+// PUT /quizzes/:quizId
+exports.update = (req, res, next) => {
+
+    const {tip, body} = req;
+
+    tip.text = body.text;
+    
+
+    tip.save()
+    .then(tip => {
+        req.flash('success', 'Tip edited successfully.');
+        res.redirect('/quizzes/' + req.params.quizId);
+    })
+    .catch(Sequelize.ValidationError, error => {
+        req.flash('error', 'There are errors in the form:');
+        error.errors.forEach(({message}) => req.flash('error', message));
+        res.render('tips/edit', {quiz});
+    })
+    .catch(error => {
+        req.flash('error', 'Error editing the Quiz: ' + error.message);
+        next(error);
+    });
 };
